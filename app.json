@@ -1,0 +1,7 @@
+{ 
+    "name": "fonb",
+    "jsFiles": ["fonb.js"],
+    "type": "foreground",
+    "displayName": "Aptus FonB!",
+    "iconFile" : "logo.png"
+}
