@@ -168,6 +168,9 @@ $callhistory.show = function(jsonStr){
 			"handler" : $callhistory.prev
 		};
 	}
+
+	$callhistory.list.onkeyup = $callhistory.checkUp;
+	$callhistory.list.onkeydown = $callhistory.checkDown;
 	$callhistory.list.setSoftkeysByList(softKeys);
 	$callhistory.list.takeFocus();
 }
@@ -177,9 +180,37 @@ $callhistory.next = function(){
 	$callhistory.request();
 }
 
+//if last record, navigate to next page
+$callhistory.checkDown = function(){
+	//check if selected record is last one
+	//and
+	//check if next is there
+	if($callhistory.list.selected == ($callhistory.data.callhistory.length -1) && $callhistory.data.CurrentPageNumber < Math.ceil($callhistory.data.TotalCount/$callhistory.data.PageSize)){
+		$contacts.list.onkeydown = null;
+		$callhistory.next();
+	}
+	//make sure we go down in case we are not going to next page
+	else if($callhistory.list.selected <  ($callhistory.data.callhistory.length -1)){
+		$callhistory.list.select($callhistory.list.selected + 1);
+	}
+}
+
 $callhistory.prev = function(){
 	$callhistory.pagenumber--;
 	$callhistory.request();
+}
+//if first record, navigate to prev page
+$callhistory.checkUp = function(){
+	//check if selected record is first
+	//check if prev is there
+	if($callhistory.list.selected == 0 && $callhistory.data.CurrentPageNumber > 1){
+		$contacts.list.onkeyup = null;
+		$callhistory.prev();
+	}
+	//make sure we go up in case we are not going to prev page
+	else if($callhistory.list.selected > 0){
+		$callhistory.list.select($callhistory.list.selected - 1);
+	}
 }
 
 $callhistory.dial = function(){
@@ -189,8 +220,7 @@ $callhistory.dial = function(){
 	});
 }
 /**
- * [ description]
- * @return {[type]} [description]
+ * show search box
  */
 $callhistory.showSearch = function(){
 	if(typeof $callhistory.searchInput == "undefined"){

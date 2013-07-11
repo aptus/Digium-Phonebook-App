@@ -138,12 +138,42 @@ $contacts.show = function(jsonStr){
 		};
 	}
 	$contacts.list.setSoftkeysByList(softKeys);
+	$contacts.list.onkeyup = $contacts.checkUp;
+	$contacts.list.onkeydown = $contacts.checkDown;
+
 	$contacts.list.takeFocus();
 }
 
 $contacts.next = function(){
 	$contacts.PageNumber++;
 	$contacts.request();
+}
+//if last contact, navigate to next page
+$contacts.checkDown = function(){
+	//check if selected contact is last one
+	//and
+	//check if next is there
+	if($contacts.list.selected == ($contacts.data.Contacts.length -1) && $contacts.data.CurrentPageNumber < Math.ceil($contacts.data.TotalCount/$contacts.data.PageSize)){
+		$contacts.list.onkeydown = null;
+		$contacts.next();
+	}
+	//make sure we go down in case we are not going to next page
+	else if($contacts.list.selected <  ($contacts.data.Contacts.length -1)){
+		$contacts.list.select($contacts.list.selected + 1);
+	}
+}
+//if first contact, navigate to prev page
+$contacts.checkUp = function(){
+	//check if selected contact is first
+	//check if prev is there
+	if($contacts.list.selected == 0 && $contacts.data.CurrentPageNumber > 1){
+		$contacts.list.onkeyup = null;
+		$contacts.prev();
+	}
+	//make sure we go up in case we are not going to prev page
+	else if($contacts.list.selected > 0){
+		$contacts.list.select($contacts.list.selected - 1);
+	}
 }
 
 $contacts.prev = function(){
