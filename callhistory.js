@@ -271,9 +271,6 @@ $callhistory.showFilters = function(){
 		}, {
 			value: "missed",
 			label: "Missed Calls"
-		}, {
-			value: "voicemail",
-			label: "Voicemails"
 		}];
 
 		$callhistory.filterList = new List(0, Text.LINE_HEIGHT+2, window.w, window.h);
